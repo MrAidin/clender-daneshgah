@@ -246,60 +246,90 @@
         </tr>
         </thead>
         <tbody>
-                @foreach(\App\Models\Event::all() as $item)
-                    <tr>
-                        <th>{{ $item->title }}</th>
-                        @php
-                            $start = \Carbon\Carbon::parse($item->start);
-                            $end = \Carbon\Carbon::parse($item->end);
-                            $colspan = 0;
-                        @endphp
-                        @for($hour = 8; $hour <= 21; $hour++)
-                            @if($start->hour <= $hour && $end->hour >= $hour && $colspan == 0)
-                                @php
-                                    $colspan = $end->hour - $start->hour + 1;
-                                @endphp
-                                <td colspan="{{ $colspan }}">مرج شده</td>
-                            @else
-                                <td></td>
-                            @endif
-                        @endfor
-                    </tr>
+        @php
+            $events_arr = [];
+           $events = \App\Models\Event::all();
+           foreach ($events as $key => $item) {
+               if ($key != 0 && $events[--$key]->title == $item->title){
+
+                   $events_arr[$item->title][] = [
+                       'start' => $events[$key]->start,
+                       'end' => $events[$key]->end,
+];
+               }else{
+                    $events_arr[$item->title][] = [
+                           'start' => $item->start,
+                           'end' => $item->end
+                       ];
+               }
+           }
+
+         dd($events_arr);
+        @endphp
+        @foreach ($events_arr as $title => $events)
+            <tr>
+                <td colspan="{{ count($events) }}">{{ $title }}</td>
+                @foreach ($events as $key => $event)
+                    @if ($key != 0 && $events[$key - 1]['end'] == $event['start'])
+                        <td>{{ $event['start'] }}</td>
+                        <td>{{ $event['end'] }}</td>
+                    @else
+            </tr><tr>
+                <td>{{ $event['start'] }}</td>
+                <td>{{ $event['end'] }}</td>
+                @endif
                 @endforeach
+            </tr>
+        @endforeach
 
 
 
-{{--        @php--}}
-{{--            $events = \App\Models\Event::all();--}}
-{{--            $titles = $events->pluck('title')->unique();--}}
-{{--            $colspan = 0 ;--}}
-{{--        @endphp--}}
-{{--        @foreach($titles as $title)--}}
-{{--            <tr>--}}
-{{--                <th>{{ $title }}</th>--}}
-{{--                @php--}}
-{{--                    $filteredEvents = $events->where('title', $title);--}}
-{{--                @endphp--}}
+        {{--        @php--}}
+        {{--            $events = \App\Models\Event::all();--}}
+        {{--            $titles = $events->pluck('title')->unique();--}}
+        {{--            $colspan = 0 ;--}}
+        {{--        @endphp--}}
+        {{--        @foreach($titles as $title)--}}
+        {{--            <tr>--}}
+        {{--                <th>{{ $title }}</th>--}}
+        {{--                @php--}}
+        {{--                    $filteredEvents = $events->where('title', $title);--}}
+        {{--$i = 0;--}}
+        {{--                @endphp--}}
 
-{{--                @for($hour = 8; $hour <= 21; $hour++)--}}
-{{--                    <td>--}}
-{{--                        @foreach($filteredEvents as $event)--}}
-{{--                            @php--}}
-{{--                                $start = \Carbon\Carbon::parse($event->start);--}}
-{{--                                $end = \Carbon\Carbon::parse($event->end);--}}
-{{--                            @endphp--}}
+        {{--                @for($hour = 8; $hour <= 21; $hour++)--}}
+        {{--                    @if(array_key_exists($i,$filteredEvents->toArray()))--}}
+        {{--                        @dd(\Carbon\Carbon::parse($filteredEvents[$I]->start)->hour , $hour)--}}
+        {{--                        @if(\Carbon\Carbon::parse($filteredEvents[$i++]->start)->hour == $hour)--}}
+        {{--                            @dd('d')--}}
+        {{--                            <td colspan="3">--}}
+        {{--                        @else--}}
+        {{--                            <td>--}}
+        {{--                        @endif--}}
+        {{--                    @else--}}
+        {{--                        <td>--}}
+        {{--                    @endif--}}
+        {{--                        @foreach($filteredEvents as $event)--}}
+        {{--                            @php--}}
+        {{--                                $start = \Carbon\Carbon::parse($event->start);--}}
+        {{--                                $end = \Carbon\Carbon::parse($event->end);--}}
+        {{--                            @endphp--}}
 
-{{--                            @if($start->hour <= $hour && $end->hour >= $hour)--}}
-{{--                                {{ $hour }}:00--}}
-{{--                                @break--}}
-{{--                            @endif--}}
-{{--                        @endforeach--}}
-{{--                    </td>--}}
-{{--                @endfor--}}
-{{--            </tr>--}}
-{{--        @endforeach--}}
+        {{--                            @if($start->hour <= $hour && $end->hour >= $hour)--}}
+        {{--                                {{ $hour }}:00--}}
+        {{--                                @break--}}
+        {{--                            @endif--}}
+        {{--                        @endforeach--}}
+        {{--                    </td>--}}
+        {{--                @endfor--}}
+        {{--            </tr>--}}
+        {{--        @endforeach--}}
 
-
+        {{--        @php--}}
+        {{--            $events = \App\Models\Event::all();--}}
+        {{--            $titles = $events->pluck('title')->unique();--}}
+        {{--            dd($titles);--}}
+        {{--        @endphp--}}
         </tbody>
     </table>
 </div>
