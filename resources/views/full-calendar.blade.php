@@ -246,58 +246,58 @@
         </tr>
         </thead>
         <tbody>
-{{--        @foreach($events as $item)--}}
+                @foreach(\App\Models\Event::all() as $item)
+                    <tr>
+                        <th>{{ $item->title }}</th>
+                        @php
+                            $start = \Carbon\Carbon::parse($item->start);
+                            $end = \Carbon\Carbon::parse($item->end);
+                            $colspan = 0;
+                        @endphp
+                        @for($hour = 8; $hour <= 21; $hour++)
+                            @if($start->hour <= $hour && $end->hour >= $hour && $colspan == 0)
+                                @php
+                                    $colspan = $end->hour - $start->hour + 1;
+                                @endphp
+                                <td colspan="{{ $colspan }}">مرج شده</td>
+                            @else
+                                <td></td>
+                            @endif
+                        @endfor
+                    </tr>
+                @endforeach
+
+
+
+{{--        @php--}}
+{{--            $events = \App\Models\Event::all();--}}
+{{--            $titles = $events->pluck('title')->unique();--}}
+{{--            $colspan = 0 ;--}}
+{{--        @endphp--}}
+{{--        @foreach($titles as $title)--}}
 {{--            <tr>--}}
-{{--                <th>{{ $item->title }}</th>--}}
+{{--                <th>{{ $title }}</th>--}}
 {{--                @php--}}
-{{--                    $start = \Carbon\Carbon::parse($item->start);--}}
-{{--                    $end = \Carbon\Carbon::parse($item->end);--}}
-{{--                    $colspan = 0;--}}
+{{--                    $filteredEvents = $events->where('title', $title);--}}
 {{--                @endphp--}}
+
 {{--                @for($hour = 8; $hour <= 21; $hour++)--}}
-{{--                    @if($start->hour <= $hour && $end->hour >= $hour && $colspan == 0)--}}
-{{--                        @php--}}
-{{--                            $colspan = $end->hour - $start->hour + 1;--}}
-{{--                        @endphp--}}
-{{--                        <td colspan="{{ $colspan }}">مرج شده</td>--}}
-{{--                    @else--}}
-{{--                        <td></td>--}}
-{{--                    @endif--}}
+{{--                    <td>--}}
+{{--                        @foreach($filteredEvents as $event)--}}
+{{--                            @php--}}
+{{--                                $start = \Carbon\Carbon::parse($event->start);--}}
+{{--                                $end = \Carbon\Carbon::parse($event->end);--}}
+{{--                            @endphp--}}
+
+{{--                            @if($start->hour <= $hour && $end->hour >= $hour)--}}
+{{--                                {{ $hour }}:00--}}
+{{--                                @break--}}
+{{--                            @endif--}}
+{{--                        @endforeach--}}
+{{--                    </td>--}}
 {{--                @endfor--}}
 {{--            </tr>--}}
 {{--        @endforeach--}}
-
-
-
-        @php
-            $events = \App\Models\Event::all();
-            $titles = $events->pluck('title')->unique();
-        @endphp
-        @foreach($titles as $title)
-            <tr>
-                <th>{{ $title }}</th>
-                @php
-                    $filteredEvents = $events->where('title', $title);
-                @endphp
-
-                @for($hour = 8; $hour <= 21; $hour++)
-                    <td>
-                        @foreach($filteredEvents as $event)
-                            @php
-                                $start = \Carbon\Carbon::parse($event->start);
-                                $end = \Carbon\Carbon::parse($event->end);
-                            @endphp
-
-                            @if($start->hour <= $hour && $end->hour >= $hour)
-                                {{ $hour }}:00
-                                @break
-                            @endif
-                        @endforeach
-                    </td>
-                @endfor
-            </tr>
-        @endforeach
-
 
 
         </tbody>
@@ -305,4 +305,5 @@
 </div>
 </body>
 </html>
+
 
