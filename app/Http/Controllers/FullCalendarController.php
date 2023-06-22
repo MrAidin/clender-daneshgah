@@ -10,15 +10,48 @@ class FullCalendarController extends Controller
 
     public function index(Request $request)
     {
-        if ($request->ajax()) {
-            $data = Event::whereDate('start', '>=', $request->start)
-                ->whereDate('end', '<=', $request->end)
-                ->get(['id', 'title', 'start', 'end']);
-            return response()->json($data);
-        }
+//        if ($request->ajax()) {
+//            $data = Event::whereDate('start', '>=', $request->start)
+//                ->whereDate('end', '<=', $request->end)
+//                ->get(['id', 'title', 'start', 'end']);
+//            return response()->json($data);
+//        }
+
+//        return $events;
+//        $titles = $events->pluck('title')->unique();
+
+
+        $data = [];
+        $times = [];
+
         $events = Event::all();
-        $titles = $events->pluck('title')->unique();
-        return view('full-calendar');
+
+        foreach ($events as $key => $event){
+
+            if (isset($data[$event->code]))
+            {
+                $data[$event->code][] = [
+                    'title' => $event->title,
+                    'start' => $event->start,
+                    'end' => $event->end,
+                ];
+                $times[]= $event->start;
+                $times[]= $event->end;
+            }else{
+                $data[$event->code][] = [
+                    'title' => $event->title,
+                    'start' => $event->start,
+                    'end' => $event->end,
+                ];
+                $times[]= $event->start;
+                $times[]= $event->end;
+            }
+
+        }
+        $times = array_unique($times);
+
+//        return $data;
+        return view('full-calendar',compact(['data','times']));
     }
 
 
@@ -50,5 +83,12 @@ class FullCalendarController extends Controller
             }
 
         }
+    }
+
+
+    public function getData(Request $request)
+    {
+        $events = Event::all();
+        return response()->json($events);
     }
 }

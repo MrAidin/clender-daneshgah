@@ -1,231 +1,56 @@
-{{--<!DOCTYPE html>--}}
-{{--<html>--}}
-{{--<head>--}}
-{{--    <title>How to Use Fullcalendar in Laravel 8</title>--}}
-
-{{--    <meta name="csrf-token" content="{{ csrf_token() }}"/>--}}
-
-{{--    <link rel="stylesheet" href="{{asset('/css/bootstrap.css')}}"/>--}}
-{{--    <script src="{{asset('/js/jquery.js')}}"></script>--}}
-{{--    <link rel="stylesheet" href="{{asset('/css/calendar.css')}}"/>--}}
-{{--    <script src="{{asset('/js/moment.js')}}"></script>--}}
-{{--    <script src="{{asset('/js/calendar.min.js')}}"></script>--}}
-{{--    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@4.4.2/packages/core/main.css" rel="stylesheet" />--}}
-{{--    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@4.4.2/packages/timeline/main.css" rel="stylesheet" />--}}
-{{--    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>--}}
-{{--    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@4.4.2/packages/core/main.js"></script>--}}
-{{--    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@4.4.2/packages/timeline/main.js"></script>--}}
-
-{{--    </head>--}}
-{{--<style>--}}
-{{--    /* استایل‌های مورد نیاز برای نمای تایم‌لاین */--}}
-{{--    #MyCalendar {--}}
-{{--        width: 100%;--}}
-{{--        height: 600px;--}}
-{{--    }--}}
-{{--</style>--}}
-{{--<body>--}}
-{{--<div class="container">--}}
-{{--    <div class="row">--}}
-{{--        <div class="col-md-12">--}}
-{{--            hdhdh--}}
-{{--            <div id="MyCalendar"></div>--}}
-{{--        </div>--}}
-{{--    </div>--}}
-{{--</div>--}}
-
-
-{{--</body>--}}
-{{--<script>--}}
-{{--    $(document).ready(function () {--}}
-
-{{--        $.ajaxSetup({--}}
-{{--            headers: {--}}
-{{--                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')--}}
-{{--            }--}}
-{{--        });--}}
-
-{{--        var calendar = $('#MyCalendar').fullCalendar({--}}
-{{--            editable: true,--}}
-{{--            initialView: 'resourceTimeline',--}}
-{{--            header: {--}}
-{{--                left: 'prev,next today',--}}
-{{--                center: 'title',--}}
-{{--                right: 'month,agendaWeek,agendaDay'--}}
-{{--            },--}}
-{{--            events: '/full-calendar',--}}
-{{--            selectable: true,--}}
-{{--            selectedHelper: true,--}}
-{{--            select: function (start, end, allday) {--}}
-{{--                var title = prompt('Event Title:');--}}
-{{--                if (title) {--}}
-{{--                    var start = $.fullCalendar.formatDate(start, 'Y-MM-DD HH:mm:ss');--}}
-{{--                    var end = $.fullCalendar.formatDate(end, 'Y-MM-DD HH:mm:ss');--}}
-
-{{--                    $.ajax({--}}
-{{--                        url: "/full-calendar/action",--}}
-{{--                        type: "post",--}}
-{{--                        data: {--}}
-{{--                            title: title,--}}
-{{--                            start: start,--}}
-{{--                            end: end,--}}
-{{--                            type: 'add'--}}
-{{--                        },--}}
-{{--                        success: function (data) {--}}
-{{--                            calendar.fullCalendar('refetchEvents');--}}
-{{--                            alert('event successfully');--}}
-{{--                        }--}}
-
-{{--                    })--}}
-
-{{--                }--}}
-{{--            },--}}
-{{--            editable: true,--}}
-{{--            eventResize: function (event, delta) {--}}
-{{--                var start = $.fullCalendar.formatDate(event.start, 'Y-MM-DD HH:mm:ss');--}}
-{{--                var end = $.fullCalendar.formatDate(event.end, 'Y-MM-DD HH:mm:ss');--}}
-{{--                var title = event.title;--}}
-{{--                var id = event.id;--}}
-{{--                $.ajax({--}}
-{{--                    url: "/full-calendar/action",--}}
-{{--                    type: "post",--}}
-{{--                    data: {--}}
-{{--                        title: title,--}}
-{{--                        start: start,--}}
-{{--                        end: end,--}}
-{{--                        id: id,--}}
-{{--                        type: 'update'--}}
-{{--                    },--}}
-{{--                    success: function (data) {--}}
-{{--                        calendar.fullCalendar('refetchEvents');--}}
-{{--                        alert('event successfully updated');--}}
-{{--                    }--}}
-
-{{--                });--}}
-
-{{--            },--}}
-{{--            eventDrop: function (event, delta) {--}}
-{{--                var start = $.fullCalendar.formatDate(event.start, 'Y-MM-DD HH:mm:ss');--}}
-{{--                var end = $.fullCalendar.formatDate(event.end, 'Y-MM-DD HH:mm:ss');--}}
-{{--                var title = event.title;--}}
-{{--                var id = event.id;--}}
-{{--                $.ajax({--}}
-{{--                    url: "/full-calendar/action",--}}
-{{--                    type: "post",--}}
-{{--                    data: {--}}
-{{--                        title: title,--}}
-{{--                        start: start,--}}
-{{--                        end: end,--}}
-{{--                        id: id,--}}
-{{--                        type: 'update'--}}
-{{--                    },--}}
-{{--                    success: function (data) {--}}
-{{--                        calendar.fullCalendar('refetchEvents');--}}
-{{--                        alert('event successfully updated');--}}
-{{--                    },--}}
-
-
-{{--                });--}}
-{{--            },--}}
-{{--            eventClick: function (event) {--}}
-{{--                if (confirm("Are you sure you want to remove it?")) {--}}
-{{--                    var id = event.id;--}}
-{{--                    $.ajax({--}}
-{{--                        url: "/full-calendar/action",--}}
-{{--                        type: "POST",--}}
-{{--                        data: {--}}
-{{--                            id: id,--}}
-{{--                            type: "delete"--}}
-{{--                        },--}}
-{{--                        success: function (response) {--}}
-{{--                            calendar.fullCalendar('refetchEvents');--}}
-{{--                            alert("Event Deleted Successfully");--}}
-{{--                        }--}}
-{{--                    })--}}
-{{--                }--}}
-{{--            }--}}
-
-
-{{--        });--}}
-{{--    });--}}
-{{--</script>--}}
-{{--<script>--}}
-{{--    // ایجاد تقویم تایم‌لاین با استفاده از FullCalendar--}}
-{{--    --}}{{--$(document).ready(function() {--}}
-{{--    --}}{{--    $('#MyCalendar').fullCalendar({--}}
-{{--    --}}{{--        header: {--}}
-{{--    --}}{{--            left: 'prev,next today',--}}
-{{--    --}}{{--            center: 'title',--}}
-{{--    --}}{{--            right: 'timelineDay,timelineThreeDays'--}}
-{{--    --}}{{--        },--}}
-{{--    --}}{{--        views: {--}}
-{{--    --}}{{--            timelineThreeDays: {--}}
-{{--    --}}{{--                type: 'timeline',--}}
-{{--    --}}{{--                duration: { days: 3 }--}}
-{{--    --}}{{--            }--}}
-{{--    --}}{{--        },--}}
-{{--    --}}{{--        defaultView: 'timelineDay',--}}
-{{--    --}}{{--        events: [--}}
-{{--    --}}{{--                @foreach($events as $event)--}}
-{{--    --}}{{--            {--}}
-{{--    --}}{{--                title: '{{ $event->title }}',--}}
-{{--    --}}{{--                start: '{{ $event->start }}',--}}
-{{--    --}}{{--                end: '{{ $event->end }}'--}}
-{{--    --}}{{--            },--}}
-{{--    --}}{{--            @endforeach--}}
-{{--    --}}{{--        ]--}}
-{{--    --}}{{--    });--}}
-{{--    --}}{{--});--}}
-{{--    document.addEventListener('DOMContentLoaded', function() {--}}
-{{--        var calendarEl = document.getElementById('calendar');--}}
-
-{{--        var calendar = new FullCalendar.Calendar(calendarEl, {--}}
-{{--            schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',--}}
-{{--            plugins: ['timeline'],--}}
-{{--            headerToolbar: {--}}
-{{--                left: 'prev,next today',--}}
-{{--                center: 'title',--}}
-{{--                right: 'timelineDay,timelineThreeDays'--}}
-{{--            },--}}
-{{--            views: {--}}
-{{--                timelineThreeDays: {--}}
-{{--                    type: 'timeline',--}}
-{{--                    duration: { days: 3 }--}}
-{{--                }--}}
-{{--            },--}}
-{{--            initialView: 'timelineDay',--}}
-{{--            events: [--}}
-{{--                @foreach($events as $event)--}}
-{{--                {--}}
-{{--                    title: '{{ $event->title }}',--}}
-{{--                    start: '{{ $event->start }}',--}}
-{{--                    end: '{{ $event->end }}'--}}
-{{--                },--}}
-{{--                @endforeach--}}
-{{--            ]--}}
-{{--        });--}}
-
-{{--        calendar.render();--}}
-{{--    });--}}
-{{--</script>--}}
-
-{{--</html>--}}
-
-    <!DOCTYPE html>
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-    <title>جدول زمانی</title>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <style>
-        .highlight {
-            background-color: red;
-        }
-    </style>
+    <script src="{{asset('/js/jquery.js')}}"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            console.log('salam ba maram')
+            // var tr_row = $('table tr').length - 1;
+            // for (let i = 0; i <= tr_row; i++){
+            //     if (i !== 0){
+            //         for (let j = 8; j <= 21; j++){
+            //             console.log($(`#row${i}-col${j}`))
+            //         }
+            //         // console.log()
+            //     }
+            // }
+
+            $.each($('.cols'),function (i, item) {
+
+                if(item.innerText != ''){
+
+                    let row = item.dataset.row;
+                    let number = parseInt(item.dataset.n);
+                    let diff = parseInt(item.dataset.diff);
+                    if(diff != NaN)
+                    {
+                        // for (let j = 0; j <= diff; j++){
+                            console.log(item.id)
+                        $(item).nextAll().slice(0, diff).remove()
+                            // console.log($(item).nextAll().slice(0, diff - 1))
+                            // $(item).nextAll().slice(0, diff).remove()
+                            // console.log($(item).nextAll())
+                        }
+                    // }
+
+                    // return false;
+                }
+            })
+        });
+
+    </script>
+    <title>Document</title>
 </head>
 <body>
 <div class="container">
-    <table class="table table-bordered">
+    <table class="table table-bordered text-center">
         <thead>
         <tr>
             <th></th>
@@ -245,95 +70,49 @@
             <th>21</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody id="dataTosh">
         @php
-            $events_arr = [];
-           $events = \App\Models\Event::all();
-           foreach ($events as $key => $item) {
-               if ($key != 0 && $events[--$key]->title == $item->title){
-
-                   $events_arr[$item->title][] = [
-                       'start' => $events[$key]->start,
-                       'end' => $events[$key]->end,
-];
-               }else{
-                    $events_arr[$item->title][] = [
-                           'start' => $item->start,
-                           'end' => $item->end
-                       ];
-               }
-           }
-
-         dd($events_arr);
+            $row = 1;
         @endphp
-        @foreach ($events_arr as $title => $events)
+        @for($i = 0; $i <= count($data); $i++)
+            @php
+                if (isset(array_values($data)[$i])){
+                    $item = array_values($data)[$i];
+                  }else{
+                    exit();
+                  }
+            @endphp
             <tr>
-                <td colspan="{{ count($events) }}">{{ $title }}</td>
-                @foreach ($events as $key => $event)
-                    @if ($key != 0 && $events[$key - 1]['end'] == $event['start'])
-                        <td>{{ $event['start'] }}</td>
-                        <td>{{ $event['end'] }}</td>
-                    @else
-            </tr><tr>
-                <td>{{ $event['start'] }}</td>
-                <td>{{ $event['end'] }}</td>
-                @endif
-                @endforeach
+                {{--                <td>{{ $item[$i]['title'] }}</td>--}}
+                <td></td>
+
+                @for($counter = 8;$counter <= 21;$counter++)
+                    <td colspan="
+                    @foreach($item as $event)
+                    {{ $event['start'] == $counter ? ( ($event['end'] - $event['start']) + 1) : ''}}
+                    @endforeach
+                        " class="cols" data-diff="
+                    @foreach($item as $event)
+                    {{ $event['start'] == $counter ? ($event['end'] - $event['start']) : '' }}
+                    @endforeach
+" data-n="{{$counter}}" data-row="{{ $row }}" id="row-{{$row}}-col-{{$counter}}">
+                        @foreach($item as $event)
+                            @if($event['start'] == $counter)
+                                {{ $event['start'].' - '.$event['end'] }}
+                            @endif
+                        @endforeach
+                    </td>
+                @endfor
+                @php $row++; @endphp
+
             </tr>
-        @endforeach
 
-
-
-        {{--        @php--}}
-        {{--            $events = \App\Models\Event::all();--}}
-        {{--            $titles = $events->pluck('title')->unique();--}}
-        {{--            $colspan = 0 ;--}}
-        {{--        @endphp--}}
-        {{--        @foreach($titles as $title)--}}
-        {{--            <tr>--}}
-        {{--                <th>{{ $title }}</th>--}}
-        {{--                @php--}}
-        {{--                    $filteredEvents = $events->where('title', $title);--}}
-        {{--$i = 0;--}}
-        {{--                @endphp--}}
-
-        {{--                @for($hour = 8; $hour <= 21; $hour++)--}}
-        {{--                    @if(array_key_exists($i,$filteredEvents->toArray()))--}}
-        {{--                        @dd(\Carbon\Carbon::parse($filteredEvents[$I]->start)->hour , $hour)--}}
-        {{--                        @if(\Carbon\Carbon::parse($filteredEvents[$i++]->start)->hour == $hour)--}}
-        {{--                            @dd('d')--}}
-        {{--                            <td colspan="3">--}}
-        {{--                        @else--}}
-        {{--                            <td>--}}
-        {{--                        @endif--}}
-        {{--                    @else--}}
-        {{--                        <td>--}}
-        {{--                    @endif--}}
-        {{--                        @foreach($filteredEvents as $event)--}}
-        {{--                            @php--}}
-        {{--                                $start = \Carbon\Carbon::parse($event->start);--}}
-        {{--                                $end = \Carbon\Carbon::parse($event->end);--}}
-        {{--                            @endphp--}}
-
-        {{--                            @if($start->hour <= $hour && $end->hour >= $hour)--}}
-        {{--                                {{ $hour }}:00--}}
-        {{--                                @break--}}
-        {{--                            @endif--}}
-        {{--                        @endforeach--}}
-        {{--                    </td>--}}
-        {{--                @endfor--}}
-        {{--            </tr>--}}
-        {{--        @endforeach--}}
-
-        {{--        @php--}}
-        {{--            $events = \App\Models\Event::all();--}}
-        {{--            $titles = $events->pluck('title')->unique();--}}
-        {{--            dd($titles);--}}
-        {{--        @endphp--}}
+        @endfor
         </tbody>
     </table>
 </div>
+
 </body>
+
+
 </html>
-
-

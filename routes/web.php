@@ -21,3 +21,4 @@ Route::get('/', function () {
 
 Route::get('/full-calendar', [FullCalendarController::class, 'index']);
 Route::post('/full-calendar/action', [FullCalendarController::class, 'action']);
+Route::get('/getData', [FullCalendarController::class, 'getData']);
